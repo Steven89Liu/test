@@ -1,0 +1,299 @@
+<?xml version="1.0"?>
+<!-- ATTENTION: When editing this file, it seems sometimes relevant in what order links and joints are defined.
+    This shouldn't be true unless `URDF_MAINTAIN_LINK_ORDER` is used in `loadURDF()`, but it is.
+    The flag doesn't seem to work, so DON'T rely on it. Even though we are accessing joints and links by name in the
+    simulation, it sometimes doesn't work. Do experiment with placing any additions at the very end of this file. -->
+
+<robot name="rotating_crane">
+
+  <link name="tracks">
+    <inertial>
+      <origin xyz="0 0 0" />
+      <mass value="0.0" />
+      <inertia  ixx="1.0" ixy="0.0"  ixz="0.0"  iyy="100.0"  iyz="0.0"  izz="1.0" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="tracks.stl" scale="0.01 0.01 0.01"/>
+      </geometry>
+      <material name="grey">
+        <color rgba="0.5 0.5 0.5 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="tracks.stl" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="gantry">
+    <visual>
+      <geometry>
+        <mesh filename="crane.stl" scale="0.01 0.01 0.01"/>
+      </geometry>
+      <origin xyz="0 0 0"/>
+      <material name="koneyellow">
+        <color rgba="0.992 0.8117 0.282 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <mass value="10000.0" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <collision>
+      <geometry>
+        <mesh filename="crane.stl" scale="0.01 0.01 0.01"/>
+      </geometry>
+      <origin xyz="0 0 0"/>
+    </collision>
+  </link>
+
+	<joint name="tracks_to_gantry" type="continuous">
+		<parent link="tracks"/>
+		<child link="hub"/>
+        <axis xyz="0 0 1"/>
+	</joint>
+
+  <link name="trolley">
+    <visual>
+      <geometry>
+        <mesh filename="trolley.stl" scale="0.01 0.01 0.01"/>
+      </geometry>
+      <origin xyz="0 0 0"/>
+      <material name="koneyellow"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="trolley.stl" scale="0.01 0.01 0.01"/>
+      </geometry>
+      <origin xyz="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="10"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+  </link>
+
+  <joint name="gantry_to_trolley" type="prismatic">
+    <axis xyz="1 0 0"/>
+    <origin xyz="2.5 0.0 2.0"/>
+    <parent link="gantry"/>
+    <child link="trolley"/>
+    <limit effort="1000.0" lower="0" upper="1.5" velocity="1"/>
+  </joint>
+
+  <link name="hoist">
+    <visual>
+      <geometry>
+        <cylinder radius="0.003" length="1"/>
+      </geometry>
+        <origin xyz="0 0 -0.5" />
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+    <inertial>
+        <origin xyz="0 0 -0.5" />
+      <mass value="10"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <!-- Caution: Without a collision spec for the hoist, bullet refuses to move the gantry (???) -->
+    <collision>
+      <geometry>
+        <cylinder radius="0.003" length="1"/>
+      </geometry>
+        <origin xyz="0 0 -0.5" />
+    </collision>
+  </link>
+
+  <joint name="trolley_to_hoist" type="prismatic">
+    <axis xyz="0 0 1"/>
+    <origin xyz="0 0 0"/>
+    <parent link="trolley"/>
+    <child link="hoist"/>
+    <limit lower="-1" upper="0" velocity="1"/>
+  </joint>
+
+
+  <link name="hub">
+    <visual>
+      <geometry>
+        <cylinder radius="0.1" length="0.1"/>
+      </geometry>
+      <origin xyz="0 0 0"/>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <collision>
+      <geometry>
+        <cylinder radius="0.1" length="0.1"/>
+      </geometry>
+      <origin xyz="0 0 0"/>
+    </collision>
+  </link>
+
+  <joint name="hub_to_gantry" type="revolute">
+    <axis xyz="0 0 1"/>
+    <origin xyz="0.0 0.0 0.0"/>
+    <parent link="hub"/>
+    <child link="gantry"/>
+    <limit effort="1000.0" lower="0.1" upper="0.1" velocity="5"/>
+  </joint>
+
+  <joint name="hoist_to_grapple_base" type="fixed">
+    <origin xyz="0.0 0.0 -0.5"/>
+    <parent link="hoist"/>
+    <child link="grapple_base"/>
+  </joint>
+
+  <link name="grapple_base">
+    <visual>
+      <geometry>
+        <mesh filename="grappleBase.stl" scale="0.01 0.01 0.01"/>
+      </geometry>
+      <origin rpy="0 0 0 " xyz="0 0 0"/>
+    <material name="reddish">
+      <color rgba="0.721 0.352 0.352 1"/>
+    </material>
+    </visual>
+   <inertial>
+    <mass value="1"/>
+    <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+  </inertial>
+  <collision>
+    <geometry>
+      <mesh filename="grappleBase.stl" scale="0.01 0.01 0.01"/>
+    </geometry>
+    <origin rpy="0 0 0 " xyz="0 0 0"/>
+  </collision>
+  </link>
+
+  <joint name="grapple_base_to_grapple_body" type="revolute">
+    <axis xyz="0 0 1"/>
+    <origin xyz="0.0 0.0 -0.09"/>
+    <parent link="grapple_base"/>
+    <child link="grapple_body"/>
+     <limit effort="1000.0" lower="-15" upper="15" velocity="5"/>
+  </joint>
+
+   <link name="grapple_body">
+    <visual>
+      <geometry>
+        <mesh filename="grappleCenter.stl" scale="0.01 0.01 0.01"/>
+      </geometry>
+      <origin rpy="0 0 0 " xyz="0 0 0"/>
+      <material name="reddish"/>
+    </visual>
+   <inertial>
+    <mass value="1"/>
+    <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+  </inertial>
+  <collision>
+    <geometry>
+      <mesh filename="grappleCenter.stl" scale="0.01 0.01 0.01"/>
+    </geometry>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+  </collision>
+  </link>
+
+  <joint name="grapple_body_to_left_grapple_jaw" type="revolute">
+    <axis xyz="0 1 0"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <parent link="grapple_body"/>
+    <child link="left_grapple_jaw"/>
+    <limit effort="1000.0" lower="-0.5" upper="0.5" velocity="5"/>
+  </joint>
+
+  <link name="left_grapple_jaw">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="grappleLeft.stl" scale="0.01 0.01 0.01"/>
+      </geometry>
+      <material name="reddish"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="grappleLeft.stl" scale="0.01 0.01 0.01"/>
+      </geometry>
+      <origin xyz="0 0 0"/>
+    </collision>
+   <inertial>
+    <mass value="5.0"/>
+    <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+  </inertial>
+  </link>
+
+  <joint name="grapple_body_to_right_grapple_jaw" type="revolute">
+    <axis xyz="0 1 0"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <parent link="grapple_body"/>
+    <child link="right_grapple_jaw"/>
+    <limit effort="1000.0" lower="-0.5" upper="0.5" velocity="5"/>
+  </joint>
+
+
+  <link name="right_grapple_jaw">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="grappleRight.stl" scale="0.01 0.01 0.01"/>
+      </geometry>
+      <material name="reddish"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="grappleRight.stl" scale="0.01 0.01 0.01"/>
+      </geometry>
+      <origin xyz="0 0 0"/>
+    </collision>
+    <inertial>
+    <mass value="5.0"/>
+    <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+  </inertial>
+  </link>
+
+    <!-- Caution: Placing this further to the top of this file causes the crane's behaviour to fuckup ??? -->
+  <link name="camera_housing">
+      <visual>
+          <geometry>
+              <box size="0.05 0.05 0.05" />
+          </geometry>
+          <material name="black" >
+              <color rgba="0 0 0 1" />
+          </material>
+      </visual>
+  </link>
+
+  <joint name="gantry_to_camera_housing" type="fixed">
+        <origin xyz="2.2 0 1.8" rpy="0 0.5 0"/>
+    <parent link="gantry"/>
+    <child link="camera_housing"/>
+  </joint>
+
+  <link name="lidar_housing">
+      <visual>
+          <geometry>
+            <cylinder radius="0.02" length="0.05"/>
+          </geometry>
+          <material name="gray" >
+              <color rgba="0.5 0.5 0.5 1" />
+          </material>
+      </visual>
+  </link>
+
+  <joint name="gantry_to_lidar_housing" type="fixed">
+        <origin xyz="2.2 0.1 1.8" rpy="0 0.5 0"/>
+    <parent link="gantry"/>
+    <child link="lidar_housing"/>
+  </joint>
+
+</robot>

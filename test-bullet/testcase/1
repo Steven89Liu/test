@@ -1,0 +1,308 @@
+#!/usr/bin/env python
+"""
+I use this minimum file to replicate the problems shown somewhere
+It has to load two files stored as npz
+
+How to run?
+python minimum_debug_case.py 0
+or
+python minimum_debug_case.py 1
+"""
+import time
+import sys
+import struct
+import argparse
+
+import numpy as np
+import scipy.interpolate as si
+import matplotlib.pyplot as plt
+
+import pybullet as p
+import pybullet_data
+
+
+def main():
+    loadplan = 0
+    if len(sys.argv) > 1 and int(sys.argv[1]) == 1:
+        loadplan = 7
+    load_fnm = 'data/bullet_debug_saved_traj_shelf_case_%d.npz' % loadplan
+    print('Loading file %s' % load_fnm)
+    show_gui = True  # tune this if you want to show windows
+    show_traj = False #True #False  # tune this if you want to show the trajectory being tracked
+    speedup = 1  # tune this if yo want to run faster
+    sim = BulletSimulator(show_gui)
+    traj = np.load(load_fnm)
+    runtraj = HermiteTrajectory(traj)
+    sim.simulate_traj(runtraj, show_traj=show_traj, speedup=speedup)
+
+
+class TrackingTrajectory(object):
+    """I have to be careful about this, things are getting complicated.
+    I am not sure which interpolation algorithm I should use"""
+    def __init__(self, tf, q0, qf):
+        self.traj_time = tf  # lenght of trajectory
+        self.q0 = q0  # initial configuration
+        self.qf = qf  # final configuration
+
+    def getq(self, t):
+        """Given time, return desired configuration"""
+        raise NotImplementedError
+
+    def getv(self, t):
+        """Given time, return desired joint velocity"""
+        raise NotImplementedError
+
+
+class HermiteTrajectory(TrackingTrajectory):
+    """This class implementes piecewise Hermite spline to generate interpolation
+    that matches both q and v on time grids, acceleration might be discontinuous.
+    It use BPoly for implementation.
+    """
+    def __init__(self, traj, show_traj=False):
+        full_time = traj['t']
+        plan_time = full_time[-1] - full_time[0]
+        super(HermiteTrajectory, self).__init__(plan_time, traj['q0'], traj['qf'])
+        ntmid, dimq = traj['q'].shape
+        tgrid = np.zeros(ntmid + 2)
+        tgrid[0] = 0
+        tgrid[-1] = plan_time
+        tgrid[1:-1] = traj['tmid']
+        xvals = np.zeros((ntmid + 2, 2))
+        bpolys = []
+        for i in range(dimq):
+            xvals[:, 0] = np.concatenate(([traj['q0'][i]], traj['q'][:, i], [traj['qf'][i]]))
+            xvals[:, 1] = np.concatenate(([traj['v0'][i]], traj['v'][:, i], [traj['vf'][i]]))
+            poly = si.BPoly.from_derivatives(tgrid, xvals, orders=3)
+            bpolys.append(poly)
+        self.bpolys = bpolys
+        if show_traj:
+            fig, ax = plt.subplots(3, 3)
+            ax[0][0].plot(traj['tmid'], traj['q'])
+            ax[1][0].plot(traj['tmid'], traj['v'])
+            ax[2][0].plot(traj['tmid'], traj['a'])
+            sample_t = np.linspace(0, plan_time, 100)
+            ax[0][1].plot(sample_t, self.getq(sample_t))
+            ax[1][1].plot(sample_t, self.getv(sample_t))
+            ax[0][2].plot(traj['tmid'], self.getq(traj['tmid']) - traj['q'])
+            ax[1][2].plot(traj['tmid'], self.getv(traj['tmid']) - traj['v'])
+            fig.tight_layout()
+            plt.show()
+
+    def getq(self, t):
+        return np.array([bpoly(t) for bpoly in self.bpolys]).T
+
+    def getv(self, t):
+        return np.array([bpoly(t, 1) for bpoly in self.bpolys]).T
+
+
+class BulletSimulator(object):
+    """
+    Bullet simulation, with a cube on the plate
+    """
+    def __init__(self, gui=True, simdt=0.003, settle_time=5):
+        ur5_path = 'ur5e_plate/ur5_robot.urdf'
+        if gui:
+            physicsClient = p.connect(p.GUI)  # or p.DIRECT for non-graphical version
+        else:
+            physicsClient = p.connect(p.DIRECT)
+        p.setAdditionalSearchPath(pybullet_data.getDataPath())  # optionally
+        p.setGravity(0, 0, -9.8)
+        p.configureDebugVisualizer(p.COV_ENABLE_GUI, 0)
+        p.configureDebugVisualizer(p.COV_ENABLE_MOUSE_PICKING, 0)
+        p.configureDebugVisualizer(p.COV_ENABLE_SHADOWS, 1)
+        #p.setPhysicsEngineParameter(numSolverIterations=500)
+        #p.setPhysicsEngineParameter(solverResidualThreshold=1e-30)
+        planeId = p.loadURDF("plane.urdf")
+        ur5StartPos = [0, 0, 3.4]
+        ur5StartOrientation = p.getQuaternionFromEuler([0, 0, 0])
+        robotId = p.loadURDF(ur5_path, ur5StartPos, ur5StartOrientation)
+        self.robotId = robotId
+        self.numJoint = p.getNumJoints(robotId)
+        self.eeId = self.numJoint - 1
+        for i in range(self.numJoint):
+            continue
+            p.changeDynamics(robotId, i, linearDamping=0, angularDamping=0, jointDamping=0)
+        # load the box, use a plane instead and set it lower
+        #self.boxId = p.loadURDF('ur5e_plate/cube_small.urdf')
+        realtime = False  # Now I hard code this since real time running is really not necessary
+        self.use_realtime = realtime
+        p.setRealTimeSimulation(realtime)
+        p.setTimeStep(simdt)
+        p.setPhysicsEngineParameter(numSubSteps=5)
+        self.settle_time = settle_time
+        self.simdt = simdt
+        self.saved_state = None
+
+    def clear_memory(self):
+        self.saved_state = None
+
+    def simulate_traj(self, traj, show_traj=False, speedup=1, more_time=0.5):
+        """Given a trajectory, we want to simulate it and record several things.
+        Return object slip if there is.
+        traj is a tuple of (tf, qfun, vfun) that returns desired q and v for any given time
+        """
+        traj_time, qfun, vfun = traj.traj_time, traj.getq, traj.getv
+        q0 = qfun(0)
+        self.reset_robot_object(q0)
+        #p.setPhysicsEngineParameter(numSolverIterations=500)
+        #p.setPhysicsEngineParameter(solverResidualThreshold=1e-30)
+        logid = p.startStateLogging(p.STATE_LOGGING_GENERIC_ROBOT, 'tmplog.txt')
+        # create interpolator which gives us the trajectory
+        t0, tf = 0, traj_time
+        plan_time = tf - t0
+        if show_traj:
+            sample_t = np.linspace(t0, tf, 300)
+            iq = qfun(sample_t)
+            iv = vfun(sample_t)
+            fig, ax = plt.subplots(3, 1)
+            ax[0].plot(sample_t, iq)
+            ax[1].plot(sample_t, iv)
+            ax[2].plot(sample_t[:-1], (iv[1:] - iv[:-1]) / (sample_t[1] - sample_t[0]))
+            plt.show()
+        t0 = sim_time = self.sim_clock
+        print('Plan time is %f' % plan_time)
+        simulate_time = plan_time + more_time  # final half seconds for final stabilizing
+        goal_q = qfun(traj_time)
+        record_num = 0  # this is used for keeping track of recording
+        sim_track = []  # this list keeps recording things we are interested in
+        sim_times = []
+        if show_traj:
+            record_command_v = []
+        print("plan_time = ", plan_time)
+        print("simulate_time = ", simulate_time)
+        while sim_time - t0 < simulate_time:
+            off_time = sim_time - t0
+            if off_time >= 0 and off_time < plan_time - self.simdt:  # interpolation is allowed here
+                target_p = qfun(off_time + self.simdt)
+                print("target_p = ", target_p)
+                target_v = vfun(off_time + self.simdt)
+                print("target_v = ", target_v)
+                if show_traj:
+                    record_command_v.append(target_v)
+                for i in range(self.eeId - 1):
+                    p.setJointMotorControl2(self.robotId, i + 1, p.POSITION_CONTROL,
+                                            target_p[i], target_v[i], positionGain=0.6, velocityGain=0.5)
+            else:
+                break
+                target_p = goal_q
+                print("#target_p = ", target_p)
+                for i in range(self.eeId - 1):
+                    p.setJointMotorControl2(self.robotId, i + 1, p.POSITION_CONTROL,
+                                            target_p[i], 0, positionGain=0.9, velocityGain=0.1)
+            # step simulation forward
+            p.stepSimulation()
+            print("sim_time=", sim_time)
+            sim_time += self.simdt
+            time.sleep(self.simdt / speedup)
+        p.stopStateLogging(logid)
+        keys, logs = readLogFile('tmplog.txt', verbose=False)
+        robotlog = logs[1::3]
+        # I shall just compare from here
+        fig, (ax, ax2) = plt.subplots(2, sharex=True)
+        ax.plot(robotlog[:, 1], robotlog[:, 17:23])
+        ax.set_prop_cycle(None)
+        teval = robotlog[:, 1] - robotlog[0, 1] + robotlog[1, 1] - robotlog[0, 1]
+        mask = teval <= plan_time
+        teval = teval[mask]
+        #qeval = qfun(teval)
+        qeval = vfun(teval)
+        ax.plot(teval, qeval, ls='--')
+        ax.set_title('Tracked Traj (dashed) vs Real Traj (Solid)')
+        #ax2.plot(teval, qeval)
+        print("max value=", np.max(robotlog[mask,17:23] - qeval))
+        ax2.plot(teval, robotlog[mask, 17:23] - qeval)
+        ax2.set_title('Tracking Error')
+        fig.tight_layout()
+        plt.show()
+        self.actual_traj = (robotlog[mask, 1], robotlog[mask, 17:23])  # later use this to calculate actual wrench
+        return np.array(sim_times), np.array(sim_track)
+
+    def reset_robot_object(self, q0, box_local_pos=None, speedup=1):
+        """Given robot initial configuration, move robot there and object above plane"""
+        # first set robot configuration
+        for i in range(self.eeId - 1):
+            p.resetJointState(self.robotId, i + 1, q0[i])
+        # then set box position
+        if box_local_pos is None:
+            box_local_pos = [0., 0., 0.04]
+        link_states = p.getLinkState(self.robotId, self.eeId, computeForwardKinematics=1)
+        box_world_pos = local_pos_to_world(link_states, box_local_pos)
+        #p.resetBasePositionAndOrientation(self.boxId, box_world_pos, [0., 0., 0., 1.])
+        #p.resetBaseVelocity(self.boxId, [0., 0., 0.], [0, 0, 0])
+        # simulate until settle_time
+        t0 = 0
+        sim_time = t0
+        while sim_time - t0 < self.settle_time:
+            for i in range(self.eeId - 1):
+                p.setJointMotorControl2(self.robotId, i + 1, p.POSITION_CONTROL,
+                                        q0[i], 0)
+            p.stepSimulation()
+            sim_time += self.simdt
+            time.sleep(self.simdt / speedup)
+        self.sim_clock = sim_time  # this variable is always updated to record time in simulation world
+        # at current time, we assume box is fixed so we update box_local_pos
+        #obj_real_pos = p.getBasePositionAndOrientation(self.boxId)[0]
+        #obj_real_vel = p.getBaseVelocity(self.boxId)[0]
+        linkstate = p.getLinkState(self.robotId, self.eeId, computeForwardKinematics=1)
+        #self.box_local_pos = world_pos_to_local(linkstate, obj_real_pos)
+        #print('box local pos = ', self.box_local_pos, ' real vel = ', obj_real_vel)
+        joints = p.getJointStates(self.robotId, list(range(self.eeId)))
+        print('robot joint = ', [j[0] for j in joints], ' vel = ', [j[1] for j in joints])
+        self.saved_state = p.saveState()
+        self.sim_clock = 0
+
+
+def local_pos_to_world(linkstate, lcl_pos):
+    """First argument is outputs from getLinkState, second is provided by user"""
+    if len(linkstate) == 2:
+        world_pos, world_quat = linkstate
+    else:
+        world_pos, world_quat = linkstate[4:6]
+    pos, _ = p.multiplyTransforms(world_pos, world_quat, lcl_pos, [0., 0., 0., 1.])
+    return pos
+
+
+def world_pos_to_local(linkstate, target_pos):
+    """First argument is outputs from getLinkState, second is provided by user"""
+    if len(linkstate) == 2:
+        world_pos, world_quat = linkstate
+    else:
+        world_pos, world_quat = linkstate[4:6]
+    inv_p, inv_q = p.invertTransform(world_pos, world_quat)
+    pos, _ = p.multiplyTransforms(inv_p, inv_q, target_pos, [0., 0., 0., 1.])
+    return pos
+
+
+def readLogFile(filename, verbose=True):
+    f = open(filename, 'rb')
+    print('Opened %s' % filename),
+    keys = f.readline().decode('utf8').rstrip('\n').split(',')
+    fmt = f.readline().decode('utf8').rstrip('\n')
+    # The byte number of one record
+    sz = struct.calcsize(fmt)
+    # The type number of one record
+    ncols = len(fmt)
+    lenChunk = sz
+    log = list()
+    chunkIndex = 0
+    while (lenChunk):
+        check = f.read(2)
+        lenChunk = 0
+        if (check == b'\xaa\xbb'):
+            mychunk = f.read(sz)
+            lenChunk = len(mychunk)
+            chunks = [mychunk]
+            for chunk in chunks:
+                chunkIndex = chunkIndex + 1
+                values = struct.unpack(fmt, chunk)
+                record = list()
+                for i in range(ncols):
+                    record.append(values[i])
+                log.append(record)
+        else:
+            break
+    return keys, np.array(log)
+
+
+if __name__ == '__main__':
+    main()

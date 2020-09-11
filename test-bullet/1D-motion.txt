@@ -1,0 +1,94 @@
+import pybullet as p
+import time
+import pybullet_data
+import matplotlib.pyplot as plt 
+import numpy as np
+
+p.connect(p.GUI)
+p.setAdditionalSearchPath(pybullet_data.getDataPath()) 
+p.setGravity(0, 0, -10)
+p.setTimeStep(0.001)
+
+#p.configureDebugVisualizer(p.COV_ENABLE_RENDERING, 0)
+#p.configureDebugVisualizer(p.COV_ENABLE_GUI, 0)
+
+plane = p.loadURDF('plane.urdf')
+vel=0
+prev_ang=0
+#wh= p.addUserDebugParameter('Velocity', -100, 100, 0)
+cubeStartPos = [0,0,0.001]
+cubeStartOrientation = p.getQuaternionFromEuler([0,0,0])
+bot = p.loadURDF('balance.urdf', cubeStartPos, cubeStartOrientation )
+k=-18.6925
+kd=-0.62
+ki=-0.000
+add =0
+
+pltPos=[]
+pltPreang=[]
+pltDv = []
+pltvel = []
+pltEuler=[]
+counter = 0
+pltcounter = 0
+while True:
+    #vel = p.readUserDebugParameter(wh)
+    cubePos, cubeOrn = p.getBasePositionAndOrientation(bot)
+    cubeEuler = p.getEulerFromQuaternion(cubeOrn)  
+    add=add+cubeEuler[0]
+    dv = k*cubeEuler[0] + kd*(cubeEuler[0]-prev_ang) + ki*add
+    vel=vel+dv
+    counter += 1
+    print("counter=", counter, "pltcounter=", pltcounter, "cubePos=", cubePos)
+    print("    prev_ang=", prev_ang, " cubeEuler[0]=", cubeEuler[0])
+    print("    vel=", vel, " dv=", dv, " add=", add )
+		
+    prev_ang=cubeEuler[0]
+    if cubePos[1] > 0.4003:
+      pltcounter += 1
+      if pltcounter % 4 == 0:
+       pltPos.append(cubePos[1])
+       #pltPreang.append(prev_ang)
+       pltDv.append(dv)
+       #pltvel.append(vel)
+       pltEuler.append(cubeEuler[0])
+		
+    if vel > 30 or vel < -30:
+		   break
+		
+    p.setJointMotorControl2(bot, 0, p.VELOCITY_CONTROL, targetVelocity=vel)
+    p.setJointMotorControl2(bot, 1, p.VELOCITY_CONTROL, targetVelocity=-vel)
+    
+    #p.applyExternalTorque(bot, 0, [vel,0,0],p.LINK_FRAME)
+    #p.applyExternalTorque(bot, 1, [-vel,0,0],p.LINK_FRAME)
+    #cubePos, cubeOrn = p.getBasePositionAndOrientation(bot)
+    #p.resetDebugVisualizerCamera(cameraTargetPosition=cubePos)
+    
+    #camTargetPos = cubePos
+    
+    #viewMatrix = p.computeViewMatrixFromYawPitchRoll(camTargetPos)
+    #projectionMatrix = [
+    #    1.0825318098068237, 0.0, 0.0, 0.0, 0.0, 1.732050895690918, 0.0, 0.0, 0.0, 0.0,
+    #    -1.0002000331878662, -1.0, 0.0, 0.0, -0.020002000033855438, 0.0
+    #]
+
+    #start = time.time()
+    #img_arr = p.getCameraImage(viewMatrix=viewMatrix, projectionMatrix=projectionMatrix, shadow=1, lightDirection=[1, 1, 1])
+    #stop = time.time()
+    
+    p.stepSimulation()
+
+plt.plot(np.arange(len(pltPos)), pltPos, color='red', label="pltPos")
+#plt.plot(np.arange(len(pltPreang)), pltPreang, color='green', label="pltPre_ang")
+plt.plot(np.arange(len(pltDv)), pltDv, color='green', label="pltDv")
+#plt.plot(np.arange(len(pltvel)), pltvel, color='blue', label="pltvel")
+plt.plot(np.arange(len(pltEuler)), pltEuler, color='blue', label="pltEuler")
+plt.ylabel('value')
+plt.xlabel('count')  
+#plt.yticks(np.arange(-25,25,1))
+#plt.xticks(np.arange(0,len(oneparam0),5))
+plt.grid()                                                                                                                                                                                                                                   
+plt.legend()
+plt.savefig("./a.png")
+plt.show(block=False)
+input()

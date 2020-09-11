@@ -1,0 +1,99 @@
+pybullet build time: Sep  6 2019 15:03:46
+b3Warning[/home/shjliu/workspace/EPR/bullet3-new/20190906/bullet3/examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+urdfdom: no axis elemement for Joint, defaulting to (1,0,0) axisb3Warning[/home/shjliu/workspace/EPR/bullet3-new/20190906/bullet3/examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+base_link_to_doorb3Warning[/home/shjliu/workspace/EPR/bullet3-new/20190906/bullet3/examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+urdfdom: no axis elemement for Joint, defaulting to (1,0,0) axisb3Warning[/home/shjliu/workspace/EPR/bullet3-new/20190906/bullet3/examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+door_to_x_handlebarjoint info= door_to_x_handlebar {'joint_damping': 0.0, 'joint_id': 6, 'joint_type': 0, 'joint_lower_limit': -0.8726646259972223, 'joint_upper_limit': 0.0}
+joint info= base_link_to_door {'joint_damping': 0.0, 'joint_id': 5, 'joint_type': 0, 'joint_lower_limit': -1.5707963267950003, 'joint_upper_limit': 1.5707963267950003}
+joint info= right_ankle_x {'joint_damping': 1.0, 'joint_id': 12, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}
+joint info= right_ankle_y {'joint_damping': 1.0, 'joint_id': 11, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}
+joint info= left_ankle_y {'joint_damping': 1.0, 'joint_id': 20, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}
+joint info= right_shoulder1 {'joint_damping': 1.0, 'joint_id': 23, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}
+joint info= right_hip_y {'joint_damping': 1.0, 'joint_id': 7, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}
+joint info= right_elbow {'joint_damping': 1.0, 'joint_id': 26, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}
+joint info= left_elbow {'joint_damping': 1.0, 'joint_id': 32, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}
+joint info= right_shoulder2 {'joint_damping': 1.0, 'joint_id': 24, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}
+joint info= left_ankle_x {'joint_damping': 1.0, 'joint_id': 21, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}
+joint info= left_hip_x {'joint_damping': 1.0, 'joint_id': 14, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}
+joint info= abdomen_y {'joint_damping': 1.0, 'joint_id': 1, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}
+joint info= left_hip_z {'joint_damping': 1.0, 'joint_id': 15, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}
+joint info= left_knee {'joint_damping': 1.0, 'joint_id': 18, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}
+joint info= abdomen_x {'joint_damping': 1.0, 'joint_id': 3, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}
+joint info= left_shoulder2 {'joint_damping': 1.0, 'joint_id': 30, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}
+joint info= right_hip_x {'joint_damping': 1.0, 'joint_id': 5, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}
+joint info= right_knee {'joint_damping': 1.0, 'joint_id': 9, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}
+joint info= left_shoulder1 {'joint_damping': 1.0, 'joint_id': 29, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}
+joint info= right_hip_z {'joint_damping': 1.0, 'joint_id': 6, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}
+joint info= abdomen_z {'joint_damping': 1.0, 'joint_id': 0, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}
+joint info= left_hip_y {'joint_damping': 1.0, 'joint_id': 16, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}
+body info= {'door': {'body_id': 0, 'body_name': 'door', 'joint_dict': {'door_to_x_handlebar': {'joint_damping': 0.0, 'joint_id': 6, 'joint_type': 0, 'joint_lower_limit': -0.8726646259972223, 'joint_upper_limit': 0.0}, 'base_link_to_door': {'joint_damping': 0.0, 'joint_id': 5, 'joint_type': 0, 'joint_lower_limit': -1.5707963267950003, 'joint_upper_limit': 1.5707963267950003}}, 'num_joints': 2, 'unique_body_id': 0}, 'robot': {'body_id': 1, 'body_name': 'robot', 'joint_dict': {'right_ankle_x': {'joint_damping': 1.0, 'joint_id': 12, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}, 'right_ankle_y': {'joint_damping': 1.0, 'joint_id': 11, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}, 'left_ankle_y': {'joint_damping': 1.0, 'joint_id': 20, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}, 'right_shoulder1': {'joint_damping': 1.0, 'joint_id': 23, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}, 'right_hip_y': {'joint_damping': 1.0, 'joint_id': 7, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}, 'right_elbow': {'joint_damping': 1.0, 'joint_id': 26, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}, 'left_elbow': {'joint_damping': 1.0, 'joint_id': 32, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}, 'right_shoulder2': {'joint_damping': 1.0, 'joint_id': 24, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}, 'left_ankle_x': {'joint_damping': 1.0, 'joint_id': 21, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}, 'left_hip_x': {'joint_damping': 1.0, 'joint_id': 14, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}, 'abdomen_y': {'joint_damping': 1.0, 'joint_id': 1, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}, 'left_hip_z': {'joint_damping': 1.0, 'joint_id': 15, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}, 'left_knee': {'joint_damping': 1.0, 'joint_id': 18, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}, 'abdomen_x': {'joint_damping': 1.0, 'joint_id': 3, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}, 'left_shoulder2': {'joint_damping': 1.0, 'joint_id': 30, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}, 'right_hip_x': {'joint_damping': 1.0, 'joint_id': 5, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}, 'right_knee': {'joint_damping': 1.0, 'joint_id': 9, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}, 'left_shoulder1': {'joint_damping': 1.0, 'joint_id': 29, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}, 'right_hip_z': {'joint_damping': 1.0, 'joint_id': 6, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}, 'abdomen_z': {'joint_damping': 1.0, 'joint_id': 0, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}, 'left_hip_y': {'joint_damping': 1.0, 'joint_id': 16, 'joint_type': 0, 'joint_lower_limit': 0.0, 'joint_upper_limit': -1.0}}, 'num_joints': 21, 'unique_body_id': 1}}
+action= [ 0.43713534 -2.3313925  -0.5445865  -3.0614295  -3.105307   -1.1710442
+  2.5100873  -0.7464044  -0.25157082 -1.4035279   1.8604546  -0.7779372
+ -1.4942379  -1.977977   -0.44107595 -0.64970475 -1.497067   -1.1786731
+ -0.5730695  -0.6015535   1.2867305 ]
+warning btCollisionDispatcher::needsCollision: static-static collision!
+startThreads creating 1 threads.
+starting thread 0
+started thread 0 
+argc=2
+argv[0] = --unused
+argv[1] = --start_demo_name=Physics Server
+ExampleBrowserThreadFunc started
+X11 functions dynamically loaded using dlopen/dlsym OK!
+X11 functions dynamically loaded using dlopen/dlsym OK!
+Creating context
+Created GL 3.3 context
+Direct GLX rendering context obtained
+Making context current
+GL_VENDOR=ATI Technologies Inc.
+GL_RENDERER=AMD Radeon Graphics
+GL_VERSION=3.3.13496 Core Profile/Debug Context FireGL
+GL_SHADING_LANGUAGE_VERSION=4.50
+pthread_getconcurrency()=0
+Version = 3.3.13496 Core Profile/Debug Context FireGL
+Vendor = ATI Technologies Inc.
+Renderer = AMD Radeon Graphics
+b3Printf: Selected demo: Physics Server
+startThreads creating 1 threads.
+starting thread 0
+started thread 0 
+MotionThreadFunc thread started
+b3Printf: b3Warning[/home/shjliu/workspace/EPR/bullet3-new/20190906/bullet3/examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+
+b3Printf: urdfdom: no axis elemement for Joint, defaulting to (1,0,0) axis
+b3Printf: b3Warning[/home/shjliu/workspace/EPR/bullet3-new/20190906/bullet3/examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+
+b3Printf: base_link_to_door
+b3Printf: b3Warning[/home/shjliu/workspace/EPR/bullet3-new/20190906/bullet3/examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+
+b3Printf: urdfdom: no axis elemement for Joint, defaulting to (1,0,0) axis
+b3Printf: b3Warning[/home/shjliu/workspace/EPR/bullet3-new/20190906/bullet3/examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+
+b3Printf: door_to_x_handlebar
+ven = ATI Technologies Inc.
+ven = ATI Technologies Inc.
+Traceback (most recent call last):
+  File "runfile_pybullet_help.py", line 347, in <module>
+    env.render(mode='human')
+  File "runfile_pybullet_help.py", line 195, in render
+    self._set_physics_client(render=(1 if mode == 'human' else 0))
+  File "runfile_pybullet_help.py", line 336, in _set_physics_client
+    flags=pybullet.URDF_USE_INERTIA_FROM_FILE | pybullet.URDF_USE_SELF_COLLISION | pybullet.URDF_USE_SELF_COLLISION_EXCLUDE_ALL_PARENTS)
+KeyboardInterrupt
+numActiveThreads = 0
+stopping threads
+Thread with taskId 0 exiting
+Thread TERMINATED
+destroy semaphore
+semaphore destroyed
+destroy main semaphore
+main semaphore destroyed
+finished
+numActiveThreads = 0
+btShutDownExampleBrowser stopping threads
+Thread with taskId 0 exiting
+Thread TERMINATED
+destroy semaphore
+semaphore destroyed
+destroy main semaphore
+main semaphore destroyed

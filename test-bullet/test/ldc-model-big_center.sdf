@@ -1,0 +1,132 @@
+<?xml version='1.0'?>
+<sdf version='1.4'>
+	<model name="ldc_container-big">
+		<static>true</static>
+
+		<link name='container_1'>
+			
+			
+			<inertial>
+                <mass>10000</mass>
+                <inertia>
+                    <ixx>1000.0000001667</ixx>
+                    <ixy>1000</ixy>
+                    <ixz>1000</ixz>
+                    <iyy>1000.0000000667</iyy>
+                    <iyz>1000</iyz>
+                    <izz>1000.0000001667</izz>
+                </inertia>
+            </inertial>
+			
+			<!-- This is the first wall of the container -->
+			<collision name='sidewall_1'>
+				<pose>0 0.34 0.34 0 0 0</pose>
+				<geometry>					
+					<box>
+						<size>1.2 0.02 0.68</size>
+					</box>
+				</geometry>
+				
+			</collision>
+
+			<visual name='sidewall_1'>
+				<pose>0 0.34 0.34 0 0 0</pose>
+				<geometry>
+					<box>
+						<size>1.2 0.02 0.68</size>
+					</box>
+				</geometry>
+			</visual>
+
+			
+			<!-- This is the second wall of the container -->
+			<collision name='sidewall_2'>
+				<pose>0.6 0 0.34 0 0 0</pose>
+				<geometry>
+					<box>
+						<size>0.02 0.68 0.68</size>
+					</box>
+				</geometry>
+				
+			</collision>
+
+			<visual name='sidewall_2'>
+				<pose>0.6 0 0.34 0 0 0</pose>
+				<geometry>
+					<box>
+						<size>0.02 0.68 0.68</size>
+					</box>
+				</geometry>
+			</visual>
+
+
+
+			<!-- This is the third wall of the container -->
+			<collision name='sidewall_3'>
+				<pose>0 -0.34 0.34 0 0 0</pose>
+				<geometry>					
+					<box>
+						<size>1.2 0.02 0.68</size>
+					</box>
+				</geometry>
+				
+			</collision>
+
+			<visual name='sidewall_3'>
+				<pose>0 -0.34 0.34 0 0 0</pose>
+				<geometry>
+					<box>
+						<size>1.2 0.02 0.68</size>
+					</box>
+				</geometry>
+			</visual>
+
+
+
+
+			<!-- This is the fourth wall of the container -->
+			<collision name='sidewall_4'>
+				<pose>-0.6 0 0.34 0 0 0</pose>
+				<geometry>
+					<box>
+						<size>0.02 0.68 0.68</size>
+					</box>
+				</geometry>
+				
+			</collision>
+
+			<visual name='sidewall_4'>
+				<pose>-0.6 0 0.34 0 0 0</pose>
+				<geometry>
+					<box>
+						<size>0.02 0.68 0.68</size>
+					</box>
+				</geometry>
+			</visual>
+
+
+			<!-- This is base of the container -->
+			<!-- <collision name='base'>
+				<pose>0 0 0 0 0 0</pose>
+				<geometry>
+					<box>
+						<size>1.2 0.68 0.02</size>
+					</box>
+				</geometry>
+				
+			</collision>
+
+			<visual name='base'>
+				<pose>0 0 0 0 0 0</pose>
+				<geometry>
+					<box>
+						<size>1.2 0.68 0.02</size>
+					</box>
+				</geometry>
+			</visual> -->
+			
+		
+
+		</link>		
+	</model>
+</sdf>

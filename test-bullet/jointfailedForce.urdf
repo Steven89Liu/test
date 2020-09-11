@@ -1,0 +1,751 @@
+<robot
+  name="MQ_SIM_ASEM">
+  <link
+    name="Chassis">
+    <inertial>
+      <origin
+        xyz="-2.2751E-16 -0.0045599 -0.0045435"
+        rpy="0 0 0" />
+      <mass
+        value="0.21254" />
+      <inertia
+        ixx="0.00050987"
+        ixy="-1.19E-11"
+        ixz="-1.8228E-18"
+        iyy="0.00078799"
+        iyz="1.2389E-06"
+        izz="0.00031486" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://MQ_SIM_ASEM/meshes/Chassis.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://MQ_SIM_ASEM/meshes/Chassis.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="FL_S">
+    <inertial>
+      <origin
+        xyz="-0.012475 -0.0045599 -0.059993"
+        rpy="0 0 0" />
+      <mass
+        value="0.21254" />
+      <inertia
+        ixx="0.00050987"
+        ixy="-1.19E-11"
+        ixz="-1.8228E-18"
+        iyy="0.00078799"
+        iyz="1.2389E-06"
+        izz="0.00031486" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://MQ_SIM_ASEM/meshes/FL_S.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://MQ_SIM_ASEM/meshes/FL_S.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="FL_S"
+    type="revolute">
+    <origin
+      xyz="0.012475 0 0.05545"
+      rpy="0 0 0" />
+    <parent
+      link="Chassis" />
+    <child
+      link="FL_S" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      effort="10"
+      velocity="5" />
+    <dynamics
+      damping="0"
+      friction="0" />
+  </joint>
+  <link
+    name="FL_U">
+    <inertial>
+      <origin
+        xyz="-0.048925 -0.00455991469585068 -0.0661434522412885"
+        rpy="0 0 0" />
+      <mass
+        value="0.212537478238056" />
+      <inertia
+        ixx="0.000509871545281873"
+        ixy="-1.18995042286199E-11"
+        ixz="-1.82281490249125E-18"
+        iyy="0.00078798977975645"
+        iyz="1.23887315159603E-06"
+        izz="0.000314862007654797" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://MQ_SIM_ASEM/meshes/FL_U.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://MQ_SIM_ASEM/meshes/FL_U.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="FL_U"
+    type="revolute">
+    <origin
+      xyz="0.03645 0 0.00615"
+      rpy="0 0 0" />
+    <parent
+      link="FL_S" />
+    <child
+      link="FL_U" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      effort="10"
+      velocity="5" />
+    <dynamics
+      damping="0"
+      friction="0" />
+  </joint>
+  <link
+    name="FL_L">
+    <inertial>
+      <origin
+        xyz="0 -0.0132084566072264 -0.000261600947614194"
+        rpy="0 0 0" />
+      <mass
+        value="0.0010736396629226" />
+      <inertia
+        ixx="0.0001"
+        ixy="0"
+        ixz="0"
+        iyy="0.0001"
+        iyz="0"
+        izz="0.0001" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://MQ_SIM_ASEM/meshes/FL_L.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://MQ_SIM_ASEM/meshes/FL_L.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="FL_L"
+    type="revolute">
+    <origin
+      xyz="0.00185 0 -0.055"
+      rpy="0 0 0" />
+    <parent
+      link="FL_U" />
+    <child
+      link="FL_L" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      effort="1000"
+      velocity="5" />
+    <dynamics
+      damping="0"
+      friction="0" />
+  </joint>
+  <link
+    name="FR_S">
+    <inertial>
+      <origin
+        xyz="0.0124749999999998 -0.00455991469584891 -0.0599934522412885"
+        rpy="0 0 0" />
+      <mass
+        value="0.212537478238056" />
+      <inertia
+        ixx="0.000509871545281873"
+        ixy="-1.18995042286199E-11"
+        ixz="-1.83636742964732E-18"
+        iyy="0.00078798977975645"
+        iyz="1.23887315159603E-06"
+        izz="0.000314862007654797" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://MQ_SIM_ASEM/meshes/FR_S.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://MQ_SIM_ASEM/meshes/FR_S.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="FR_S"
+    type="revolute">
+    <origin
+      xyz="-0.012475 0 0.05545"
+      rpy="0 0 0" />
+    <parent
+      link="Chassis" />
+    <child
+      link="FR_S" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      effort="10"
+      velocity="5" />
+    <dynamics
+      damping="0"
+      friction="0" />
+  </joint>
+  <link
+    name="FR_U">
+    <inertial>
+      <origin
+        xyz="0.0489249999999996 -0.00455991469584817 -0.0661434522412884"
+        rpy="0 0 0" />
+      <mass
+        value="0.212537478238056" />
+      <inertia
+        ixx="0.000509871545281873"
+        ixy="-1.18995042286199E-11"
+        ixz="-1.82281490249125E-18"
+        iyy="0.00078798977975645"
+        iyz="1.23887315159603E-06"
+        izz="0.000314862007654797" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://MQ_SIM_ASEM/meshes/FR_U.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://MQ_SIM_ASEM/meshes/FR_U.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="FR_U"
+    type="revolute">
+    <origin
+      xyz="-0.03645 0 0.00615"
+      rpy="0 0 0" />
+    <parent
+      link="FR_S" />
+    <child
+      link="FR_U" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      effort="10"
+      velocity="5" />
+    <dynamics
+      damping="0"
+      friction="0" />
+  </joint>
+  <link
+    name="FR_L">
+    <inertial>
+      <origin
+        xyz="6.93889390390723E-18 -0.0132084566072264 -0.000261600947614193"
+        rpy="0 0 0" />
+      <mass
+        value="0.0010736396629226" />
+      <inertia
+        ixx="0.0001"
+        ixy="0"
+        ixz="0"
+        iyy="0.0001"
+        iyz="0"
+        izz="0.0001" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://MQ_SIM_ASEM/meshes/FR_L.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://MQ_SIM_ASEM/meshes/FR_L.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="FR_L"
+    type="revolute">
+    <origin
+      xyz="-0.00185 0 -0.055"
+      rpy="0 0 0" />
+    <parent
+      link="FR_U" />
+    <child
+      link="FR_L" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      effort="1000"
+      velocity="5" />
+    <dynamics
+      damping="0"
+      friction="0" />
+  </joint>
+  <link
+    name="BL_S">
+    <inertial>
+      <origin
+        xyz="-0.0124749999999998 -0.00455991469584891 0.0509065477587115"
+        rpy="0 0 0" />
+      <mass
+        value="0.212537478238056" />
+      <inertia
+        ixx="0.000509871545281873"
+        ixy="-1.18995042294669E-11"
+        ixz="-1.82959116606929E-18"
+        iyy="0.00078798977975645"
+        iyz="1.23887315159603E-06"
+        izz="0.000314862007654797" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://MQ_SIM_ASEM/meshes/BL_S.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://MQ_SIM_ASEM/meshes/BL_S.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="BL_S"
+    type="revolute">
+    <origin
+      xyz="0.012475 0 -0.05545"
+      rpy="0 0 0" />
+    <parent
+      link="Chassis" />
+    <child
+      link="BL_S" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      effort="10"
+      velocity="5" />
+    <dynamics
+      damping="0"
+      friction="0" />
+  </joint>
+  <link
+    name="BL_U">
+    <inertial>
+      <origin
+        xyz="-0.0489249999999992 -0.00455991469584733 0.0570565477587112"
+        rpy="0 0 0" />
+      <mass
+        value="0.212537478238056" />
+      <inertia
+        ixx="0.000509871545281873"
+        ixy="-1.18995036212972E-11"
+        ixz="-1.82281490249125E-18"
+        iyy="0.00078798977975645"
+        iyz="1.2388731515953E-06"
+        izz="0.000314862007654797" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://MQ_SIM_ASEM/meshes/BL_U.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://MQ_SIM_ASEM/meshes/BL_U.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="BL_U"
+    type="revolute">
+    <origin
+      xyz="0.03645 0 -0.00615"
+      rpy="0 0 0" />
+    <parent
+      link="BL_S" />
+    <child
+      link="BL_U" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      effort="10"
+      velocity="5" />
+    <dynamics
+      damping="0"
+      friction="0" />
+  </joint>
+  <link
+    name="BL_L">
+    <inertial>
+      <origin
+        xyz="0 -0.0132084566072264 -0.00026160094761421"
+        rpy="0 0 0" />
+      <mass
+        value="0.0010736396629226" />
+      <inertia
+        ixx="0.0001"
+        ixy="0"
+        ixz="0"
+        iyy="0.0001"
+        iyz="0"
+        izz="0.0001" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://MQ_SIM_ASEM/meshes/BL_L.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://MQ_SIM_ASEM/meshes/BL_L.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="BL_L"
+    type="revolute">
+    <origin
+      xyz="0.00185 0 -0.055"
+      rpy="0 0 0" />
+    <parent
+      link="BL_U" />
+    <child
+      link="BL_L" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      effort="1000"
+      velocity="5" />
+    <dynamics
+      damping="0"
+      friction="0" />
+  </joint>
+  <link
+    name="BR_S">
+    <inertial>
+      <origin
+        xyz="0.0124750000000002 -0.00455991469584895 0.0509065477587112"
+        rpy="0 0 0" />
+      <mass
+        value="0.212537478238056" />
+      <inertia
+        ixx="0.000509871545281873"
+        ixy="-1.18995036212972E-11"
+        ixz="-1.82281490249125E-18"
+        iyy="0.00078798977975645"
+        iyz="1.2388731515953E-06"
+        izz="0.000314862007654797" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://MQ_SIM_ASEM/meshes/BR_S.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://MQ_SIM_ASEM/meshes/BR_S.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="BR_S"
+    type="revolute">
+    <origin
+      xyz="-0.012475 0 -0.05545"
+      rpy="0 0 0" />
+    <parent
+      link="Chassis" />
+    <child
+      link="BR_S" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      effort="10"
+      velocity="5" />
+    <dynamics
+      damping="0"
+      friction="0" />
+  </joint>
+  <link
+    name="BR_U">
+    <inertial>
+      <origin
+        xyz="0.0489250000000004 -0.00455991469584955 0.0570565477587115"
+        rpy="0 0 0" />
+      <mass
+        value="0.212537478238056" />
+      <inertia
+        ixx="0.000509871545281873"
+        ixy="-1.18995042226906E-11"
+        ixz="-1.81603863891322E-18"
+        iyy="0.00078798977975645"
+        iyz="1.23887315159459E-06"
+        izz="0.000314862007654797" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://MQ_SIM_ASEM/meshes/BR_U.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://MQ_SIM_ASEM/meshes/BR_U.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="BR_U"
+    type="revolute">
+    <origin
+      xyz="-0.03645 0 -0.00615"
+      rpy="0 0 0" />
+    <parent
+      link="BR_S" />
+    <child
+      link="BR_U" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      effort="10"
+      velocity="5" />
+    <dynamics
+      damping="0"
+      friction="0" />
+  </joint>
+  <link
+    name="BR_L">
+    <inertial>
+      <origin
+        xyz="6.93889390390723E-18 -0.0132084566072264 -0.00026160094761421"
+        rpy="0 0 0" />
+      <mass
+        value="0.0010736396629226" />
+      <inertia
+        ixx="0.0001"
+        ixy="0"
+        ixz="0"
+        iyy="0.0001"
+        iyz="0"
+        izz="0.0001" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://MQ_SIM_ASEM/meshes/BR_L.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://MQ_SIM_ASEM/meshes/BR_L.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="BR_L"
+    type="revolute">
+    <origin
+      xyz="-0.00185 0 -0.055"
+      rpy="0 0 0" />
+    <parent
+      link="BR_U" />
+    <child
+      link="BR_L" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      effort="1000"
+      velocity="5" />
+    <dynamics
+      damping="0"
+      friction="0" />
+  </joint>
+</robot>

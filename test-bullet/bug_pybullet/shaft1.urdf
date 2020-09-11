@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<robot name="shaft1.urdf">
+  <link name="base_link">
+    <contact>
+      <lateral_friction value=".5"/>
+    </contact>
+    <inertial>
+      <origin xyz="0 0 0.04"/>
+      <mass value="0.0236"/>
+      <inertia ixx="4.853e-8" ixy="0" ixz="0" iyy="4.853e-8" iyz="0" izz="9.73e-9"/>
+    </inertial>
+    <visual>
+      <geometry>
+	    <mesh filename="shaft1.stl" scale="0.0254 0.0254 0.0254"/>
+      </geometry>
+        <material name="dark_grey">
+          <color rgba="0.2 0.2 0.2 1"/>
+        </material>
+    </visual>
+    <collision>
+      <geometry>
+	    <mesh filename="shaft1.stl" scale="0.0254 0.0254 0.0254"/>
+      </geometry>
+    </collision>
+  </link>
+</robot>
